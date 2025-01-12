@@ -1,0 +1,1 @@
+Calculator project for Odin. HTML/CSS/JS functional calculator.

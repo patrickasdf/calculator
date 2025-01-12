@@ -1,0 +1,25 @@
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(255, 160, 122, 0.4);
+    border: 1px dotted red;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 255, 0.151);
+    max-width: 500px;
+    min-height: auto;
+    margin: 12px;
+}
+
+button {
+    display: flex;
+    background-color: rgba(0, 255, 106, 0.514);
+    min-width: 10px;
+    min-height: 10px;
+}

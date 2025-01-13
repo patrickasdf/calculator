@@ -1,10 +1,9 @@
 const container = document.querySelector(".container");
 document.body.appendChild(container);
+const display = document.querySelector(".display");
+const clear = document.querySelector(".clear");
 
-//const buttonGrid = document.createElement("button");
-//buttonGrid.textContent = "AAAAAA";
-//container.appendChild(buttonGrid);
-
+// Calculator functions
 function add(a,b) {
     console.log(a + b);
     return a + b;
@@ -25,6 +24,19 @@ function divide(a,b) {
     return a / b;
 }
 
+//Object for digits and modifiers
+const buttonOptions = { 
+    digit : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    modifier : ['add', 'subtract', 'multiply', 'divide'],
+    clear: ['clear'],
+}
+
+function clearDisplay(){ 
+    display.textContent = 'C';
+}
+clear.addEventListener("click", clearDisplay);
+
+//Initialize parameters for operate function
 const firstNum = 0;
 const secondNum = 0;
 const operator = 0;
@@ -49,3 +61,10 @@ function operate(firstNum, operator, secondNum) {
     }
 }
 operate(firstNum, operator, secondNum);
+
+
+
+console.log(buttonOptions.digit[1]);
+function displayDigit() {
+
+}

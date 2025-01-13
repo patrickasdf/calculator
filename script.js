@@ -1,9 +1,9 @@
 const container = document.querySelector(".container");
 document.body.appendChild(container);
 
-const buttonGrid = document.createElement("button");
-buttonGrid.textContent = "AAAAAA";
-container.appendChild(buttonGrid);
+//const buttonGrid = document.createElement("button");
+//buttonGrid.textContent = "AAAAAA";
+//container.appendChild(buttonGrid);
 
 function add(a,b) {
     console.log(a + b);

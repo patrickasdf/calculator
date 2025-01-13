@@ -1,7 +1,11 @@
 const container = document.querySelector(".container");
 document.body.appendChild(container);
 const display = document.querySelector(".display");
+display.textContent = '0';
+currentDisplay = display.textContent;
+console.log("current= " + currentDisplay);
 const clear = document.querySelector(".clear");
+const buttonDigit = document.querySelectorAll(".digit");
 
 // Calculator functions
 function add(a,b) {
@@ -24,17 +28,32 @@ function divide(a,b) {
     return a / b;
 }
 
-//Object for digits and modifiers
+//Object for digits and modifiers (not used yet??)
 const buttonOptions = { 
     digit : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     modifier : ['add', 'subtract', 'multiply', 'divide'],
     clear: ['clear'],
 }
 
-function clearDisplay(){ 
+function displayClear(){ 
     display.textContent = 'C';
+    currentDisplay = '';
+    console.log("display reset to nothing" + currentDisplay);
+    //firstNUm, operator, secondNum to be cleared also
 }
-clear.addEventListener("click", clearDisplay);
+clear.addEventListener("click", displayClear);
+
+function displayPopulate() {
+    buttonDigit.forEach((button) => {
+        button.addEventListener("click", () => {
+            display.textContent = currentDisplay + button.textContent;
+            currentDisplay = display.textContent;
+            console.log("Display= " + currentDisplay);
+        })
+    })
+}
+displayPopulate();
+//buttonDigit.addEventListener("click", displayPopulate)
 
 //Initialize parameters for operate function
 const firstNum = 0;
@@ -61,10 +80,3 @@ function operate(firstNum, operator, secondNum) {
     }
 }
 operate(firstNum, operator, secondNum);
-
-
-
-console.log(buttonOptions.digit[1]);
-function displayDigit() {
-
-}

@@ -50,3 +50,7 @@ button {
 .digit.zero {
     flex-grow: 2;
 }
+
+.digit.disabled {
+    background-color: rgba(128, 128, 128, 0.836);
+}

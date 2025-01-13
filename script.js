@@ -1,15 +1,15 @@
 const container = document.querySelector(".container");
 document.body.appendChild(container);
 const display = document.querySelector(".display");
-display.textContent = '0';
+display.textContent = '';
 currentDisplay = display.textContent;
 console.log("current= " + currentDisplay);
 const clear = document.querySelector(".clear");
-const buttonDigit = document.querySelectorAll(".digit");
+const buttonPress = document.querySelectorAll(".clickme");
 
 // Calculator functions
 function add(a,b) {
-    console.log(a + b);
+    console.log(parseInt(a + b));
     return a + b;
 }
 
@@ -36,24 +36,66 @@ const buttonOptions = {
 }
 
 function displayClear(){ 
-    display.textContent = 'C';
+    display.textContent = '';
     currentDisplay = '';
+    decimalToggle(); //toggle if on, do nothing if off
     console.log("display reset to nothing" + currentDisplay);
     //firstNUm, operator, secondNum to be cleared also
 }
 clear.addEventListener("click", displayClear);
 
 function displayPopulate() {
-    buttonDigit.forEach((button) => {
+    buttonPress.forEach((button) => {
         button.addEventListener("click", () => {
-            display.textContent = currentDisplay + button.textContent;
-            currentDisplay = display.textContent;
-            console.log("Display= " + currentDisplay);
+            if (!button.classList.contains("disabled")) {
+                if (button.classList.contains("decimal")) {
+                    display.textContent = currentDisplay + button.textContent;
+                    currentDisplay = display.textContent;
+                   // console.log("Display= " + currentDisplay);
+                    button.classList.add("disabled");
+                }
+                else if (button.classList.contains("modifier")) {
+                    completedNum = display.textContent;
+                    currentDisplay = display.textContent;
+                   // console.log("Display= " + currentDisplay);
+                   // console.log("completedNum = " +completedNum);
+                    decimalToggle();
+                    display.textContent = '';
+                    currentDisplay = display.textContent;
+                    modifier = button.textContent;
+                    console.log(modifier);
+                }
+                else if (button.classList.contains("equals")) {
+                    completedNumSecond = display.textContent;
+                    currentDisplay = display.textContent;
+                    console.log("Display= " + currentDisplay);
+                    console.log("completedNum = " +completedNum);
+                    console.log("completedNumSecond- " + completedNumSecond);
+                    decimalToggle();
+                    display.textContent = operate(completedNum, modifier, completedNumSecond);
+                    currentDisplay = display.textContent;
+                }
+                else {
+                    display.textContent = currentDisplay + button.textContent;
+                    currentDisplay = display.textContent;
+                    console.log("Display= " + currentDisplay);
+                }
+            }
         })
     })
 }
 displayPopulate();
-//buttonDigit.addEventListener("click", displayPopulate)
+
+function decimalToggle() { //turn off decimal for modifiers, equals, clear
+    if (!document.querySelector(".disabled")) {
+        console.log("no disabled");
+    }
+    else if (document.querySelector(".disabled")) {
+        const disabledActive = document.body.querySelector(".disabled");
+        disabledActive.classList.remove("disabled");
+        console.log("disabled active");
+    }
+}
 
 //Initialize parameters for operate function
 const firstNum = 0;
@@ -65,16 +107,16 @@ function operate(firstNum, operator, secondNum) {
         case 0:
             console.log("case 0, operator 0");
             break;
-        case 1: //add
+        case '+': //add
             add(firstNum, secondNum);
             break;
-        case 2: //subtract
+        case "-": //subtract
             subtract(firstNum, secondNum);
             break;
-        case 3: //multiply
+        case "*": //multiply
             multiply(firstNum, secondNum);
             break;
-        case 4: //divide
+        case "/": //divide
             divide(firstNum, secondNum);
             break;
     }

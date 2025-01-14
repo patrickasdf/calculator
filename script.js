@@ -9,8 +9,8 @@ const buttonPress = document.querySelectorAll(".clickme");
 
 // Calculator functions
 function add(a,b) {
-    console.log(parseInt(a + b));
-    return a + b;
+    console.log(parseInt(a) + parseInt(b));
+    return (a + b);
 }
 
 function subtract(a,b) {

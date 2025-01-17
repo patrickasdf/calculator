@@ -43,7 +43,7 @@ button {
     border: 4px solid black;
 }
 
-.equals {
+.modifier.equals {
     background-color: rgba(240, 69, 69, 0.8);
 }
 
@@ -51,6 +51,10 @@ button {
     flex-grow: 2;
 }
 
-.digit.disabled {
-    background-color: rgba(128, 128, 128, 0.836);
+.disabled {
+    background-color: rgba(128, 128, 128, 0.6);
+}
+
+.decimal {
+    background-color: rgba(127, 255, 212, 0.5);
 }

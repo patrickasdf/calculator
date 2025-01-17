@@ -8,93 +8,129 @@ const buttonPress = document.querySelectorAll(".clickme");
 
 // Calculator functions
 function add(a,b) {
-    console.log(parseInt(a) + parseInt(b));
     return a + b;
 }
 
 function subtract(a,b) {
-    console.log(a - b);
     return a - b;
 }
 
 function multiply(a,b) {
-    console.log(a * b);
     return a * b;
 }
 
 function divide(a,b) {
-    console.log(a / b);
     return a / b;
 }
 
-//Object for digits and modifiers (not used yet??)
-const buttonOptions = { 
-    digit : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-}
+numArray = [];
+firstVal = 'empty';
+secondVal = 'empty';
+myVal = '';
 
 function displayClear(){ 
     display.textContent = '';
     currentDisplay = '';
-    decimalToggle(); //toggle if on, do nothing if off
-    //firstNUm, operator, secondNum to be cleared also
+    decimalToggle();
+    numArray = [];
+    firstVal = 'empty';
+    secondVal = 'empty';
+    myVal = '';
+    
 }
 clear.addEventListener("click", displayClear);
 
-//numarray
-// array.push(button.textContent)
-//decimals should already be disabled
-//modifiers -- 
-// if !firstVal {
-// array.join(''));
-// array.split(button.textContent) //mod pressed)
-// firstVal = array[0] 
-// first .contains(".") {
-//      parsefloat(firstVal)
-//  }
-// else firstVal = parseInt(firstVal)
-// numarray = [] //reset to 0 after saving firstVal
-//} 
 function displayPopulate() {
-    numArray = [];
-
     buttonPress.forEach((button) => {
         button.addEventListener("click", () => {
             if (!button.classList.contains("disabled")) {
                 if (button.classList.contains("decimal")) {
+                    myVal = numArray.push(button.textContent);
                     display.textContent = currentDisplay + button.textContent;
                     currentDisplay = display.textContent;
                     button.classList.add("disabled");
-                }
+                } 
+
                 else if (button.classList.contains("modifier")) {
-                    completedNum = display.textContent;
-                    currentDisplay = display.textContent;
-                    decimalToggle();
-                    display.textContent = '';
-                    currentDisplay = display.textContent;
-                    modifier = button.textContent;
-                    console.log(modifier);
-                }
-                else if (button.classList.contains("equals")) {
-                    completedNumSecond = display.textContent;
-                    currentDisplay = display.textContent;
-                    console.log("completedNum = " +completedNum);
-                    console.log("completedNumSecond- " + completedNumSecond);
-                    decimalToggle();
-                    currentDisplay = operate(completedNum, modifier, completedNumSecond);
-                    display.textContent = currentDisplay;
-                }
-                else {
+                    if (button.classList.contains("equals")) {
+                        modifier = modifier;
+                    }
+                    else modifier = button.textContent;
                     display.textContent = currentDisplay + button.textContent;
                     currentDisplay = display.textContent;
+                    decimalToggle();
+                    if (firstVal == 'empty') {
+                        if (numArray.includes('.') == true) {
+                            myVal = numArray.join('');
+                            firstVal = parseFloat(parseFloat(myVal).toFixed(2));
+                        } else if (numArray.includes('.') == false) {
+                            myVal = numArray.join('');
+                            firstVal = parseInt(myVal);
+                        }
+                        if (secondVal !== 'empty') {
+                            operate(firstVal, modifier, secondVal);
+                            secondVal = 'empty';
+                            firstVal = newNum;
+                            console.log(newNum);
+                        }
+                        numArray = [];
+                        myVal= '';
+                    }
+                    else if (secondVal == 'empty') {
+                        if (numArray.includes('.') == true) {
+                            myVal = numArray.join('');
+                            secondVal = parseFloat(parseFloat(myVal).toFixed(2));
+                        } else if (numArray.includes('.') == false) {
+                            myVal = numArray.join('');
+                            secondVal = parseInt(myVal);
+                        }
+                        numArray = [];
+                        myVal= '';
+                        operate(firstVal, modifier, secondVal);
+                        console.log(newNum);
+                        secondVal = newNum;
+                        firstVal = 'empty';
+                        console.log(newNum);
+                    }
+                } 
+
+                // else if (button.classList.contains("equals")) {
+                //     decimalToggle();
+                //     if (secondVal == 'empty') {
+                //         if (numArray.includes('.') == true) {
+                //             myVal = numArray.join('');
+                //             secondVal = parseFloat(parseFloat(myVal).toFixed(2));
+                //         } else if (numArray.includes('.') == false) {
+                //             myVal = numArray.join('');
+                //             secondVal = parseInt(myVal);
+                //         }
+                //         numArray = [];
+                //         myVal= '';
+                //         operate(firstVal, modifier, secondVal);
+                //         secondVal = newNum;
+                //         firstVal = 'empty';
+                //         console.log(newNum);
+                //     }
+                //     console.log(firstVal + " " + modifier + " " + secondVal)
+                //     operate(firstVal, modifier, secondVal);
+                // }          
+                
+                else if (button.classList.contains("digit")) {
+                    myVal = numArray.push(button.textContent);
+                    display.textContent = currentDisplay + button.textContent;
+                    currentDisplay = display.textContent; 
+                } 
+                else {
+                    console.log("nothing happens");
                 }
+
             }
         })
     })
 }
 displayPopulate();
-//each click adds to end of array, check for mod or equals and run operation
 
-function decimalToggle() { //turn off decimal for modifiers, equals, clear
+function decimalToggle() {
     if (!document.querySelector(".disabled")) { //do nothing
     }
     else { //decimal is disabled so turn back on
@@ -110,9 +146,12 @@ const operator = 0;
 
 function operate(firstNum, operator, secondNum) {
     switch (operator) {
-        case "+": return add(firstNum, secondNum);
-        case "-": return subtract(firstNum, secondNum);
-        case "*": return multiply(firstNum, secondNum);
-        case "/": return divide(firstNum, secondNum);
-    }
+        case "+": 
+            display.textContent = add(firstNum, secondNum);
+            currentDisplay = display.textContent;
+            return newNum = add(firstNum, secondNum);
+        case "-": return display.textContent = subtract(firstNum, secondNum);
+        case "*": return display.textContent = multiply(firstNum, secondNum);
+        case "/": return display.textContent = divide(firstNum, secondNum);
+    };
 }

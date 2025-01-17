@@ -20,6 +20,9 @@ function multiply(a,b) {
 }
 
 function divide(a,b) {
+    if (b == 0) {
+        return "Can't divide by 0";
+    }
     return a / b;
 }
 
@@ -27,6 +30,8 @@ numArray = [];
 firstVal = 'empty';
 secondVal = 'empty';
 myVal = '';
+newNum = '';
+modifier = 'empty';
 
 function displayClear(){ 
     display.textContent = '';
@@ -36,6 +41,8 @@ function displayClear(){
     firstVal = 'empty';
     secondVal = 'empty';
     myVal = '';
+    modifier = 'empty';
+    newNum = '';
     
 }
 clear.addEventListener("click", displayClear);
@@ -52,8 +59,12 @@ function displayPopulate() {
                 } 
 
                 else if (button.classList.contains("modifier")) {
-                    if (button.classList.contains("equals")) {
-                        modifier = modifier;
+                    console.log("1st " + firstVal + " 2nd " + secondVal + " mod " + modifier);
+                    if ((isNaN(firstVal)) && firstVal !== 'empty') {
+                        firstVal = 'empty';
+                    }
+                    else if ((isNaN(secondVal)) && secondVal !== 'empty') {
+                        secondVal = 'empty';
                     }
                     else modifier = button.textContent;
                     display.textContent = currentDisplay + button.textContent;
@@ -69,6 +80,11 @@ function displayPopulate() {
                         }
                         if (secondVal !== 'empty') {
                             operate(firstVal, modifier, secondVal);
+                            if (button.classList.contains("equals")) {
+                                modifier = 'empty';
+                            } else
+                            display.textContent = currentDisplay + button.textContent;
+                            currentDisplay = display.textContent;
                             secondVal = 'empty';
                             firstVal = newNum;
                             console.log(newNum);
@@ -86,44 +102,75 @@ function displayPopulate() {
                         }
                         numArray = [];
                         myVal= '';
-                        operate(firstVal, modifier, secondVal);
+                        if (firstVal !== 'empty' && secondVal !== 'empty') {
+                            operate(firstVal, modifier, secondVal);
+                        }
+                        display.textContent = currentDisplay + button.textContent;
+                        currentDisplay = display.textContent;
+                        console.log(newNum);
+                        secondVal = newNum;
+                        newNum = '';
+                        firstVal = 'empty';
+                    }
+                }  
+
+                else if (button.classList.contains("equals")) {
+                    decimalToggle();
+                    if (firstVal == 'empty') {
+                        if (numArray.includes('.') == true) {
+                            myVal = numArray.join('');
+                            firstVal = parseFloat(parseFloat(myVal).toFixed(2));
+                        } else if (numArray.includes('.') == false) {
+                            myVal = numArray.join('');
+                            firstVal = parseInt(myVal);
+                        }
+                        if (secondVal !== 'empty') {
+                            operate(firstVal, modifier, secondVal);
+                            display.textContent = currentDisplay;
+                            currentDisplay = display.textContent;
+                            secondVal = 'empty';
+                            firstVal = newNum;
+                            console.log(newNum);
+                        }
+                        numArray = [];
+                        myVal= '';
+                    }
+                    else if (secondVal == 'empty') {
+                        if (numArray.includes('.') == true) {
+                            myVal = numArray.join('');
+                            secondVal = parseFloat(parseFloat(myVal).toFixed(2));
+                        } else if (numArray.includes('.') == false) {
+                            myVal = numArray.join('');
+                            secondVal = parseInt(myVal);
+                        }
+                        numArray = [];
+                        myVal= '';
+                        if (firstVal !== 'empty' && secondVal !== 'empty') {
+                            operate(firstVal, modifier, secondVal);
+                        }
+                        display.textContent = currentDisplay;
+                        currentDisplay = display.textContent;
                         console.log(newNum);
                         secondVal = newNum;
                         firstVal = 'empty';
-                        console.log(newNum);
                     }
-                } 
-
-                // else if (button.classList.contains("equals")) {
-                //     decimalToggle();
-                //     if (secondVal == 'empty') {
-                //         if (numArray.includes('.') == true) {
-                //             myVal = numArray.join('');
-                //             secondVal = parseFloat(parseFloat(myVal).toFixed(2));
-                //         } else if (numArray.includes('.') == false) {
-                //             myVal = numArray.join('');
-                //             secondVal = parseInt(myVal);
-                //         }
-                //         numArray = [];
-                //         myVal= '';
-                //         operate(firstVal, modifier, secondVal);
-                //         secondVal = newNum;
-                //         firstVal = 'empty';
-                //         console.log(newNum);
-                //     }
-                //     console.log(firstVal + " " + modifier + " " + secondVal)
-                //     operate(firstVal, modifier, secondVal);
-                // }          
+                }
                 
                 else if (button.classList.contains("digit")) {
-                    myVal = numArray.push(button.textContent);
-                    display.textContent = currentDisplay + button.textContent;
-                    currentDisplay = display.textContent; 
-                } 
+                    if (newNum == '') {
+                        myVal = numArray.push(button.textContent);
+                        display.textContent = currentDisplay + button.textContent;
+                        currentDisplay = display.textContent; 
+                    } else {
+                        modifier = 'empty';
+                        display.textContent = button.textContent;
+                        currentDisplay = display.textContent;
+                        myVal = numArray.push(button.textContent);
+                    }
+                }
                 else {
                     console.log("nothing happens");
                 }
-
             }
         })
     })
@@ -145,13 +192,25 @@ const secondNum = 0;
 const operator = 0;
 
 function operate(firstNum, operator, secondNum) {
+    if (isNaN(firstNum) || (isNaN(secondNum))) {
+        return console.log("1st or 2nd is Nan");
+    }
     switch (operator) {
         case "+": 
             display.textContent = add(firstNum, secondNum);
             currentDisplay = display.textContent;
             return newNum = add(firstNum, secondNum);
-        case "-": return display.textContent = subtract(firstNum, secondNum);
-        case "*": return display.textContent = multiply(firstNum, secondNum);
-        case "/": return display.textContent = divide(firstNum, secondNum);
+        case "-": 
+            display.textContent = subtract(firstNum, secondNum);
+            currentDisplay = display.textContent;
+            return newNum = subtract(firstNum, secondNum);    
+        case "*": 
+            display.textContent = multiply(firstNum, secondNum);
+            currentDisplay = display.textContent;
+            return newNum = multiply(firstNum, secondNum);    
+        case "/": 
+            display.textContent = divide(firstNum, secondNum);
+            currentDisplay = display.textContent;
+            return newNum = divide(firstNum, secondNum);
     };
 }
